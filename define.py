@@ -6,10 +6,10 @@ from pprint import pprint
 
 class HTMLNavigationError(Exception): pass
 
-def _search_url(term):
+def _search_url(search_term):
 	url_format = "https://www.google.com/search?q=DEFINE:{term}"
-	term = '"'.join(['', term, '']).translate({ord(' '): '%20'})
-	return url_format.format(term=term)
+	search_term = '"'.join(['', search_term, '']).translate({ord(' '): '%20'})
+	return url_format.format(term=search_term)
 
 def _get_defns(defn_table):
 	meaning_dict = {}
@@ -44,5 +44,15 @@ def interactive_prompt(prompt='Define: '):
 		val = inp()
 
 if __name__ == '__main__':
-	for search_term in interactive_prompt():
-		pprint(define(search_term))
+	import argparse
+	parser = argparse.ArgumentParser(description='Dynamic word lookup using Google.')
+	parser.add_argument('-d', '--define', nargs='+', default=None, 
+		help='Search for a specific term or terms. Prints results as a JSON dictionary.')
+	args = parser.parse_args()
+	if args.define:
+		import json
+		result_dict = {search_term: define(search_term) for search_term in args.define}
+		print(json.dumps(result_dict))
+	else:
+		for search_term in interactive_prompt():
+			pprint(define(search_term))
