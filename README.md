@@ -1,0 +1,1 @@
+This is a dynamic lookup API I created that creates a google search and parses the results to return word definitions.  View my blog post about it <a href="http://www.codeandramblings.com/index.php/2017/07/10/dynamic-word-lookup-using-google-and-python-3/">here</a>.
